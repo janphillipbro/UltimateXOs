@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 // class definition
-public class Example020 extends Application {
+public class UltimateXOs extends Application {
 	// overridden init method
 	@Override
 	public void init() {
@@ -23,8 +23,8 @@ public class Example020 extends Application {
 	public void start(Stage primaryStage) {
 		// set a size, title and a scene on the main window. show it when
 		// ready
-		primaryStage.setTitle("Custom Control Example");
-		primaryStage.setScene(new Scene(sp_mainlayout, 300, 300));
+		primaryStage.setTitle("Ultimate XOs (TIC TAC TOE)");
+		primaryStage.setScene(new Scene(sp_mainlayout, 900, 900));
 		primaryStage.show();
 	}
 
