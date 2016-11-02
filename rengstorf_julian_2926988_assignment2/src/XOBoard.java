@@ -11,7 +11,7 @@ import javafx.scene.transform.Translate;
 // class definition for drawing a game board
 class XOBoard extends Pane {
 	// constructor for the class
-	public XOBoard() {
+	public XOBoard(XOUltimateBoard ref) {
 		// initialise the boards
 		board = new int[3][3];
 		renders = new XOPiece[3][3];
@@ -20,7 +20,7 @@ class XOBoard extends Pane {
 				board[i][j] = EMPTY;
 				renders[i][j] = null;
 			}
-		current_player = XPIECE;
+		ref.setCurrent_player(XPIECE);
 		
 		// initialise the rectangle and lines
 		back = new Rectangle();
@@ -68,8 +68,8 @@ class XOBoard extends Pane {
 		// call the superclass method first
 		super.resize(width, height);
 		// figure out the width and height of a cell
-		cell_width = width / 3.0;
-		cell_height = height / 3.0;
+		cell_width = width / 9.0;
+		cell_height = height / 9.0;
 
 		// resize the rectangle to take the full size of the widget
 		back.setWidth(width);
@@ -112,20 +112,20 @@ class XOBoard extends Pane {
 		int indexx = (int) (x / cell_width);
 		int indexy = (int) (y / cell_height);
 		// if the position is empty then place a piece and swap the players
-		if (board[indexx][indexy] == EMPTY && current_player == XPIECE) {
+		if (board[indexx][indexy] == EMPTY && ref.getCurrent_player() == XPIECE) {
 			board[indexx][indexy] = XPIECE;
 			renders[indexx][indexy] = new XOPiece(XPIECE);
 			renders[indexx][indexy].resize(cell_width, cell_height);
 			renders[indexx][indexy].relocate(indexx * cell_width, indexy * cell_height);
 			getChildren().add(renders[indexx][indexy]);
-			current_player = OPIECE;
-		} else if (board[indexx][indexy] == EMPTY && current_player == OPIECE) {
+			ref.setCurrent_player(OPIECE);
+		} else if (board[indexx][indexy] == EMPTY && ref.getCurrent_player() == OPIECE) {
 			board[indexx][indexy] = OPIECE;
 			renders[indexx][indexy] = new XOPiece(OPIECE);
 			renders[indexx][indexy].resize(cell_width, cell_height);
 			renders[indexx][indexy].relocate(indexx * cell_width, indexy * cell_height);
 			getChildren().add(renders[indexx][indexy]);
-			current_player = XPIECE;
+			ref.setCurrent_player(XPIECE);
 		}
 	}
 
@@ -137,9 +137,10 @@ class XOBoard extends Pane {
 	private double cell_width, cell_height; // width and height of a cell
 	// translation of {one, two} cell {width, height}
 	private Translate ch_one, ch_two, cw_one, cw_two;
-	private int current_player; // who is the current player
 	// constants for the class
 	private final int EMPTY = 0;
 	private final int XPIECE = 1;
 	private final int OPIECE = 2;
+	
+	private XOUltimateBoard ref;
 }

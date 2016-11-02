@@ -11,7 +11,7 @@ class CustomControl extends Control {
 	public CustomControl() {
 		// set a default skin and generate a game board
 		setSkin(new CustomControlSkin(this));
-		 xoboard = new XOBoard();
+		 xoboard = new XOUltimateBoard();
 		 getChildren().add(xoboard);
 
 		// add a mouse clicked listener that will try to place a piece
@@ -36,5 +36,5 @@ class CustomControl extends Control {
 	}
 
 	// private fields of the class
-	private XOBoard xoboard;
+	private XOUltimateBoard xoboard;
 }

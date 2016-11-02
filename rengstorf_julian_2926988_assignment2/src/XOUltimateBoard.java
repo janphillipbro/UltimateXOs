@@ -14,7 +14,7 @@ class XOUltimateBoard extends Pane {
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++) {
 				boardWinners[i][j] = EMPTY;	// initialize the winners array
-				renders[i][j] = new XOBoard();	// render the XO Boards
+				renders[i][j] = new XOBoard(this);	// render the XO Boards
 			}
 		current_player = XPIECE;
 	}
@@ -42,7 +42,7 @@ class XOUltimateBoard extends Pane {
 			for (int j = 0; j < 3; j++) {
 				boardWinners[i][j] = 0;
 				getChildren().remove(renders[i][j]);
-				renders[i][j] = new XOBoard();
+				renders[i][j] = new XOBoard(this);
 			}
 		}
 	}
@@ -53,7 +53,7 @@ class XOUltimateBoard extends Pane {
 		int indexx = (int) (x / cell_width);
 		int indexy = (int) (y / cell_height);
 		// place piece in the correct XOBoard
-		renders[indexx][indexy].placePiece(x, y);				
+		renders[indexx][indexy].placePiece(x/3, y/3); //buggy!				
 	}
 
 	// private fields of the class
