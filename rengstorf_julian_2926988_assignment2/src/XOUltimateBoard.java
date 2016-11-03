@@ -52,7 +52,7 @@ class XOUltimateBoard extends Pane {
 		// translate the x, y coordinates into cell indexes
 		int indexx = (int) (x / cell_width);
 		int indexy = (int) (y / cell_height);
-		// place piece in the correct XOBoard
+		// place piece in the correct XOBoard in the right place
 		renders[indexx][indexy].placePiece(x/3, y/3); //buggy!				
 	}
 
