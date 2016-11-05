@@ -1,5 +1,4 @@
 
-
 // an implementation of the XO board and the game logic
 // imports necessary for this class
 import javafx.scene.layout.Pane;
@@ -13,8 +12,10 @@ class XOUltimateBoard extends Pane {
 		renders = new XOBoard[3][3];
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++) {
-				boardWinners[i][j] = EMPTY;	// initialize the winners array
-				renders[i][j] = new XOBoard(this);	// render the XO Boards
+				boardWinners[i][j] = EMPTY; // initialize the winners array
+				renders[i][j] = new XOBoard(XOUltimateBoard.this); // render the
+																	// XO Boards
+				getChildren().add(renders[i][j]);
 			}
 		current_player = XPIECE;
 	}
@@ -35,14 +36,24 @@ class XOUltimateBoard extends Pane {
 		// figure out the width and height of a cell
 		cell_width = width / 3.0;
 		cell_height = height / 3.0;
+		
+		// we need to reset the sizes and positions of all XOPieces that were placed
+				for (int i = 0; i < 3; i++) {
+					for (int j = 0; j < 3; j++) {
+						renders[i][j].relocate(i * cell_width, j * cell_height);
+							renders[i][j].resize(cell_width, cell_height);
+					}
+				}
 	}
+
 	// public method for resetting the game
 	public void resetGame() {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				boardWinners[i][j] = 0;
-				getChildren().remove(renders[i][j]);
-				renders[i][j] = new XOBoard(this);
+				this.getChildren().remove(renders[i][j]);
+				renders[i][j] = new XOBoard(XOUltimateBoard.this);
+				getChildren().add(renders[i][j]);
 			}
 		}
 	}
@@ -52,8 +63,9 @@ class XOUltimateBoard extends Pane {
 		// translate the x, y coordinates into cell indexes
 		int indexx = (int) (x / cell_width);
 		int indexy = (int) (y / cell_height);
+		// translate height and width values and pass to 
 		// place piece in the correct XOBoard in the right place
-		renders[indexx][indexy].placePiece(x/3, y/3); //buggy!				
+		renders[indexx][indexy].placePiece(x, y, cell_width, cell_height); // buggy!
 	}
 
 	// private fields of the class

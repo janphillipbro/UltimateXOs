@@ -1,5 +1,4 @@
 
-
 import javafx.scene.control.Control;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -11,8 +10,8 @@ class CustomControl extends Control {
 	public CustomControl() {
 		// set a default skin and generate a game board
 		setSkin(new CustomControlSkin(this));
-		 xoboard = new XOUltimateBoard();
-		 getChildren().add(xoboard);
+		xoboard = new XOUltimateBoard();
+		getChildren().add(xoboard);
 
 		// add a mouse clicked listener that will try to place a piece
 		setOnMouseClicked((MouseEvent event) -> {

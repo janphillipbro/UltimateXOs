@@ -12,6 +12,7 @@ import javafx.scene.transform.Translate;
 class XOBoard extends Pane {
 	// constructor for the class
 	public XOBoard(XOUltimateBoard ref) {
+		this.ref=ref;
 		// initialise the boards
 		board = new int[3][3];
 		renders = new XOPiece[3][3];
@@ -20,7 +21,7 @@ class XOBoard extends Pane {
 				board[i][j] = EMPTY;
 				renders[i][j] = null;
 			}
-		ref.setCurrent_player(XPIECE);
+		this.ref.setCurrent_player(XPIECE);
 		
 		// initialise the rectangle and lines
 		back = new Rectangle();
@@ -68,8 +69,11 @@ class XOBoard extends Pane {
 		// call the superclass method first
 		super.resize(width, height);
 		// figure out the width and height of a cell
-		cell_width = width / 9.0;
-		cell_height = height / 9.0;
+//		width = width / 3.0;
+//		height = height / 3.0;
+		
+		cell_width = width / 3.0;
+		cell_height = height / 3.0;
 
 		// resize the rectangle to take the full size of the widget
 		back.setWidth(width);
@@ -77,13 +81,16 @@ class XOBoard extends Pane {
 		// set a new y on the horizontal lines and translate them into place
 		ch_one.setY(cell_height);
 		ch_two.setY(2 * cell_height);
-		h1.setEndX(width);
-		h2.setEndX(width);
+		h1.setEndX(width  * 0.9);
+		h2.setEndX(width * 0.9);
 		// set a new x on the vertical lines and translate them into place
 		cw_one.setX(cell_width);
 		cw_two.setX(2 * cell_width);
-		v1.setEndY(height);
-		v2.setEndY(height);
+		v1.setEndY(height * 0.9);
+		v2.setEndY(height * 0.9);
+		
+		Rectangle rect = new Rectangle();
+		
 		// we need to reset the sizes and positions of all XOPieces that were placed
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -107,10 +114,10 @@ class XOBoard extends Pane {
 	}
 
 	// public method that tries to place a piece
-	public void placePiece(final double x, final double y) {
+	public void placePiece(final double x, final double y, final double width, final double height) {
 		// translate the x, y coordinates into cell indexes
-		int indexx = (int) (x / cell_width);
-		int indexy = (int) (y / cell_height);
+		int indexx = (int) (x / width);
+		int indexy = (int) (y / height);
 		// if the position is empty then place a piece and swap the players
 		if (board[indexx][indexy] == EMPTY && ref.getCurrent_player() == XPIECE) {
 			board[indexx][indexy] = XPIECE;
