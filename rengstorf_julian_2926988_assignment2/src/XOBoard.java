@@ -1,5 +1,4 @@
 
-
 // an implementation of the XO board and the game logic
 // imports necessary for this class
 import javafx.scene.layout.Pane;
@@ -12,7 +11,7 @@ import javafx.scene.transform.Translate;
 class XOBoard extends Pane {
 	// constructor for the class
 	public XOBoard(XOUltimateBoard ref) {
-		this.ref=ref;
+		this.ref = ref;
 		// initialise the boards
 		board = new int[3][3];
 		renders = new XOPiece[3][3];
@@ -22,14 +21,18 @@ class XOBoard extends Pane {
 				renders[i][j] = null;
 			}
 		this.ref.setCurrent_player(XPIECE);
-		
+
 		// initialise the rectangle and lines
 		back = new Rectangle();
 		back.setFill(Color.BLACK);
-		h1 = new Line(); h2 = new Line();
-		v1 = new Line(); v2 = new Line();
-		h1.setStroke(Color.WHITE); h2.setStroke(Color.WHITE);
-		v1.setStroke(Color.WHITE); v2.setStroke(Color.WHITE);
+		h1 = new Line();
+		h2 = new Line();
+		v1 = new Line();
+		v2 = new Line();
+		h1.setStroke(Color.WHITE);
+		h2.setStroke(Color.WHITE);
+		v1.setStroke(Color.WHITE);
+		v2.setStroke(Color.WHITE);
 
 		// the horizontal lines only need the endx value modified the rest of
 		// the values can be zero
@@ -69,9 +72,9 @@ class XOBoard extends Pane {
 		// call the superclass method first
 		super.resize(width, height);
 		// figure out the width and height of a cell
-//		width = width / 3.0;
-//		height = height / 3.0;
-		
+		// width = width / 3.0;
+		// height = height / 3.0;
+
 		cell_width = width / 3.0;
 		cell_height = height / 3.0;
 
@@ -81,16 +84,14 @@ class XOBoard extends Pane {
 		// set a new y on the horizontal lines and translate them into place
 		ch_one.setY(cell_height);
 		ch_two.setY(2 * cell_height);
-		h1.setEndX(width  * 0.9);
+		h1.setEndX(width * 0.9);
 		h2.setEndX(width * 0.9);
 		// set a new x on the vertical lines and translate them into place
 		cw_one.setX(cell_width);
 		cw_two.setX(2 * cell_width);
 		v1.setEndY(height * 0.9);
 		v2.setEndY(height * 0.9);
-		
-		Rectangle rect = new Rectangle();
-		
+
 		// we need to reset the sizes and positions of all XOPieces that were placed
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -114,10 +115,10 @@ class XOBoard extends Pane {
 	}
 
 	// public method that tries to place a piece
-	public void placePiece(final double x, final double y, final double width, final double height) {
-		// translate the x, y coordinates into cell indexes
-		int indexx = (int) (x / width);
-		int indexy = (int) (y / height);
+	public void placePiece(final double x, final double y, final double localTileWidth, final double localTileHeight) {
+		// translate the x, y coordinates into cell indexes (tileIndexX * cell_width)
+		int indexx = (int) ((x - localTileWidth) / cell_width);
+		int indexy = (int) ((y - localTileHeight) / cell_height);
 		// if the position is empty then place a piece and swap the players
 		if (board[indexx][indexy] == EMPTY && ref.getCurrent_player() == XPIECE) {
 			board[indexx][indexy] = XPIECE;
@@ -148,6 +149,6 @@ class XOBoard extends Pane {
 	private final int EMPTY = 0;
 	private final int XPIECE = 1;
 	private final int OPIECE = 2;
-	
+
 	private XOUltimateBoard ref;
 }

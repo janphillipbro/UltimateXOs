@@ -36,14 +36,14 @@ class XOUltimateBoard extends Pane {
 		// figure out the width and height of a cell
 		cell_width = width / 3.0;
 		cell_height = height / 3.0;
-		
+
 		// we need to reset the sizes and positions of all XOPieces that were placed
-				for (int i = 0; i < 3; i++) {
-					for (int j = 0; j < 3; j++) {
-						renders[i][j].relocate(i * cell_width, j * cell_height);
-							renders[i][j].resize(cell_width, cell_height);
-					}
-				}
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				renders[i][j].relocate(i * cell_width, j * cell_height);
+				renders[i][j].resize(cell_width, cell_height);
+			}
+		}
 	}
 
 	// public method for resetting the game
@@ -63,9 +63,9 @@ class XOUltimateBoard extends Pane {
 		// translate the x, y coordinates into cell indexes
 		int indexx = (int) (x / cell_width);
 		int indexy = (int) (y / cell_height);
-		// translate height and width values and pass to 
+		// translate height and width values and pass to
 		// place piece in the correct XOBoard in the right place
-		renders[indexx][indexy].placePiece(x, y, cell_width, cell_height); // buggy!
+		renders[indexx][indexy].placePiece(x, y, indexx * cell_width, indexy * cell_height);
 	}
 
 	// private fields of the class
