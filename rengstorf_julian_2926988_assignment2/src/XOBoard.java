@@ -1,7 +1,9 @@
 
 // an implementation of the XO board and the game logic
+
 // imports necessary for this class
 import javafx.scene.layout.Pane;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -20,7 +22,7 @@ class XOBoard extends Pane {
 				board[i][j] = EMPTY;
 				renders[i][j] = null;
 			}
-		this.ref.setCurrent_player(XPIECE);
+		ref.setCurrent_player(XPIECE);
 
 		// initialise the rectangle and lines
 		back = new Rectangle();
@@ -115,10 +117,10 @@ class XOBoard extends Pane {
 	}
 
 	// public method that tries to place a piece
-	public void placePiece(final double x, final double y, final double localTileWidth, final double localTileHeight) {
+	public void placePiece(final double x, final double y, final int tileX, final int tileY) { //, final double localTileWidth, final double localTileHeight) {
 		// translate the x, y coordinates into cell indexes of the current XOBoard
-		int indexx = (int) ((x - localTileWidth) / cell_width);
-		int indexy = (int) ((y - localTileHeight) / cell_height);
+		int indexx = (int) ((x - (tileX * 3.0 * cell_width)) / cell_width);
+		int indexy = (int) ((y - (tileY * 3.0 * cell_height)) / cell_height);
 		// if the position is empty then place a piece and swap the players
 		if (board[indexx][indexy] == EMPTY && ref.getCurrent_player() == XPIECE) {
 			board[indexx][indexy] = XPIECE;
@@ -126,6 +128,8 @@ class XOBoard extends Pane {
 			renders[indexx][indexy].resize(cell_width, cell_height);
 			renders[indexx][indexy].relocate(indexx * cell_width, indexy * cell_height);
 			getChildren().add(renders[indexx][indexy]);
+			if (GameLogic.getInstance().detectWinner(board, indexx, indexy, ref.getCurrent_player()))
+				ref.updateBoardWinners(tileX,tileY);
 			ref.setCurrent_player(OPIECE);
 		} else if (board[indexx][indexy] == EMPTY && ref.getCurrent_player() == OPIECE) {
 			board[indexx][indexy] = OPIECE;
@@ -133,8 +137,11 @@ class XOBoard extends Pane {
 			renders[indexx][indexy].resize(cell_width, cell_height);
 			renders[indexx][indexy].relocate(indexx * cell_width, indexy * cell_height);
 			getChildren().add(renders[indexx][indexy]);
+			if (GameLogic.getInstance().detectWinner(board, indexx, indexy, ref.getCurrent_player()))
+				ref.updateBoardWinners(tileX,tileY);
 			ref.setCurrent_player(XPIECE);
 		}
+
 	}
 
 	// private fields of the class
@@ -151,4 +158,12 @@ class XOBoard extends Pane {
 	private final int OPIECE = 2;
 
 	private XOUltimateBoard ref;
+
+	public int[][] getBoard() {
+		return board;
+	}
+
+	public void setBoard(int[][] board) {
+		this.board = board;
+	}
 }
