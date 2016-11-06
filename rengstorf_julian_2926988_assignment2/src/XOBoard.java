@@ -75,9 +75,6 @@ class XOBoard extends Pane {
 		// call the superclass method first
 		super.resize(width, height);
 		// figure out the width and height of a cell
-		// width = width / 3.0;
-		// height = height / 3.0;
-
 		cell_width = width / 3.0;
 		cell_height = height / 3.0;
 
@@ -119,7 +116,7 @@ class XOBoard extends Pane {
 
 	// public method that tries to place a piece
 	public void placePiece(final double x, final double y, final double localTileWidth, final double localTileHeight) {
-		// translate the x, y coordinates into cell indexes (tileIndexX * cell_width)
+		// translate the x, y coordinates into cell indexes of the current XOBoard
 		int indexx = (int) ((x - localTileWidth) / cell_width);
 		int indexy = (int) ((y - localTileHeight) / cell_height);
 		// if the position is empty then place a piece and swap the players

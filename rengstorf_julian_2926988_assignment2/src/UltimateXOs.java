@@ -1,6 +1,5 @@
+// Ultimate Tic Tac Toe Game
 
-// JavaFX example that showcases how to build an entirely custom control
-// that fits into the JavaFX model.
 // imports
 import javafx.application.Application;
 import javafx.scene.Scene;

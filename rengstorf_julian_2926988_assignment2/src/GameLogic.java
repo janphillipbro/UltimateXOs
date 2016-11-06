@@ -6,5 +6,5 @@ If so notify the user and update the board array of the XOUltimateBoard.
 Majority of code to appear in GameLogic.
  */
 public class GameLogic {
-
+	
 }
