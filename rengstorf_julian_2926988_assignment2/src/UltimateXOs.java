@@ -1,5 +1,4 @@
 
-
 // JavaFX example that showcases how to build an entirely custom control
 // that fits into the JavaFX model.
 // imports
