@@ -25,6 +25,9 @@ class XOBoard extends Pane {
 		// initialise the rectangle and lines
 		back = new Rectangle();
 		back.setFill(Color.BLACK);
+		// stroke a border around the XOBoard
+		back.setStroke(Color.YELLOW);
+
 		h1 = new Line();
 		h2 = new Line();
 		v1 = new Line();
@@ -84,13 +87,13 @@ class XOBoard extends Pane {
 		// set a new y on the horizontal lines and translate them into place
 		ch_one.setY(cell_height);
 		ch_two.setY(2 * cell_height);
-		h1.setEndX(width * 0.9);
-		h2.setEndX(width * 0.9);
+		h1.setEndX(width);
+		h2.setEndX(width);
 		// set a new x on the vertical lines and translate them into place
 		cw_one.setX(cell_width);
 		cw_two.setX(2 * cell_width);
-		v1.setEndY(height * 0.9);
-		v2.setEndY(height * 0.9);
+		v1.setEndY(height);
+		v2.setEndY(height);
 
 		// we need to reset the sizes and positions of all XOPieces that were placed
 		for (int i = 0; i < 3; i++) {
