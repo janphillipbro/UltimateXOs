@@ -21,7 +21,7 @@ public class UltimateXOs extends Application {
 	public void start(Stage primaryStage) {
 		// set a size, title and a scene on the main window. show it when
 		// ready
-		primaryStage.setTitle("Ultimate XOs (TIC TAC TOE)");
+		primaryStage.setTitle("Ultimate XOs --  Ultimate TIC TAC TOE");
 		primaryStage.setScene(new Scene(sp_mainlayout, 600, 600));
 		primaryStage.show();
 	}

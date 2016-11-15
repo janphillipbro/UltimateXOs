@@ -1,0 +1,2 @@
+Reading the Program and understanding it
+Start understanding how to not allow to click bzw. denie to set the x/O
