@@ -7,7 +7,7 @@ public class GameLogic {
 	private int[][] winners;
 	private int current_player;
 	private Boolean[][] activeBoards = new Boolean[3][3]; // active state of the
-													// XOBoards
+	// XOBoards
 	private static GameLogic singleton = new GameLogic();
 
 	/*
@@ -23,6 +23,7 @@ public class GameLogic {
 			}
 		}
 	}
+
 	public boolean detectWinner(int[][] board, int pieceX, int pieceY, int boardX, int boardY) {
 		if (examineBoard(board, pieceX, pieceY, current_player)) {
 			displayWinner(current_player, "Board");
@@ -31,6 +32,7 @@ public class GameLogic {
 		}
 		return false;
 	}
+
 	public boolean detectOverallWinner(int boardX, int boardY, int possibleWinner) {
 		if (examineBoard(this.winners, boardX, boardY, possibleWinner)) {
 			displayWinner(possibleWinner, "Game");
@@ -68,7 +70,7 @@ public class GameLogic {
 	}
 
 	// detects winner of a tile and updates
-	public boolean detectWinner(int[][] board, int x, int y, int currentPlayer) {
+	public boolean detectBoardWinner(int[][] board, int x, int y, int currentPlayer) {
 		if (examineBoard(board, x, y, currentPlayer)) {
 			displayWinner(currentPlayer, "Tile");
 			return true;
@@ -134,14 +136,13 @@ public class GameLogic {
 	public void displayWinner(int winner, String winType) {
 		String playername = "NO NAME";
 		if (winner == XPIECE)
-			playername = "Red (X)";
+			playername = "X";
 		if (winner == OPIECE)
-			playername = "Green (O)";
+			playername = "O";
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle(winType + " Winner");
 		alert.setHeaderText("You won the " + winType);
-		alert.setContentText(
-				"Hello Player " + playername + "!\n " + "I have good news for you! You won the " + winType);
+		alert.setContentText("Hello Player " + playername + "!\n " + "You won the " + winType);
 		alert.showAndWait();
 	}
 
@@ -163,5 +164,21 @@ public class GameLogic {
 	public void tryPlacePiece(XOBoard xoBoard, double x, double y, int indexx, int indexy) {
 		xoBoard.placePiece(x, y, indexx, indexy);
 
+	}
+
+	public void reset() {
+
+		winners = new int[3][3];
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				winners[i][j] = EMPTY;
+				activeBoards[i][j] = ACTIVE;
+			}
+		}
+
+	}
+
+	public int[][] getWinners() {
+		return winners;
 	}
 }

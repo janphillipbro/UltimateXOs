@@ -13,6 +13,7 @@ import javafx.scene.transform.Translate;
 class XOBoard extends Pane {
 	// constructor for the class
 	public XOBoard(XOUltimateBoard ref) {
+		this.ref = ref;
 		// initialise the boards
 		board = new int[3][3];
 		renders = new XOPiece[3][3];
@@ -130,8 +131,10 @@ class XOBoard extends Pane {
 			renders[indexx][indexy].relocate(indexx * cell_width, indexy * cell_height);
 			getChildren().add(renders[indexx][indexy]);
 
-			if (gameLogic.detectWinner(board, indexx, indexy, boardX, boardY))
-				back.setFill(Color.DARKRED); // display won field
+			if (gameLogic.detectWinner(board, indexx, indexy, boardX, boardY)) {
+				// display won field
+				back.setFill(Color.DARKRED);
+			}
 			gameLogic.setCurrent_player(OPIECE); // update current player
 			gameLogic.setActiveStates(indexx, indexy); // activate next board
 
@@ -142,14 +145,18 @@ class XOBoard extends Pane {
 			renders[indexx][indexy].relocate(indexx * cell_width, indexy * cell_height);
 			getChildren().add(renders[indexx][indexy]);
 
-			if (gameLogic.detectWinner(board, indexx, indexy, boardX, boardY))
-				back.setFill(Color.DARKOLIVEGREEN); // display won field
+			if (gameLogic.detectWinner(board, indexx, indexy, boardX, boardY)) {
+				// display won field
+				back.setFill(Color.DARKOLIVEGREEN);
+			}
 			gameLogic.setCurrent_player(XPIECE); // update current player
 			gameLogic.setActiveStates(indexx, indexy); // activate next board
 		}
 	}
 
 	// private fields of the class
+	// refference to UltimateXOboard
+	private XOUltimateBoard ref;
 	// array that holds all pieces
 	private int[][] board;
 	// array that holds all the render pieces
@@ -176,4 +183,18 @@ class XOBoard extends Pane {
 	public void setBoard(int[][] board) {
 		this.board = board;
 	}
+
+	public void showActive(int i) {
+		if (i==1)
+		back.setFill(Color.LIGHTPINK);
+		if (i==2)
+			back.setFill(Color.LIGHTGREEN);
+
+	}
+
+	public void showInActive() {
+		back.setFill(Color.BLACK);
+
+	}
+
 }

@@ -16,6 +16,7 @@ class XOUltimateBoard extends Pane {
 				renders[i][j] = new XOBoard(this); // render the XO Boards
 				getChildren().add(renders[i][j]);
 			}
+		showPossibleBoards();
 	}
 
 	// we have to override resizing behaviour to make our view appear properly
@@ -45,6 +46,8 @@ class XOUltimateBoard extends Pane {
 				this.getChildren().remove(renders[i][j]);
 				renders[i][j] = new XOBoard(XOUltimateBoard.this);
 				getChildren().add(renders[i][j]);
+				gameLogic.reset();
+				showPossibleBoards();
 			}
 		}
 	}
@@ -56,10 +59,10 @@ class XOUltimateBoard extends Pane {
 		int indexy = (int) (y / cell_height);
 		// save current player, cause it will be switched in placePiece
 		int possibleWinner = gameLogic.getCurrent_player();
+		updateBoardWinners();
 		// translate height and width values and pass to
 		// place piece in the correct XOBoard in the right place
 		if (boardWinners[indexx][indexy] == EMPTY) {
-			// gameLogic.tryPlacePiece(renders[indexx][indexy],x,y,indexx,indexy);
 			if (gameLogic.checkBoard(indexx, indexy)) {
 				renders[indexx][indexy].placePiece(x, y, indexx, indexy);
 			}
@@ -67,12 +70,24 @@ class XOUltimateBoard extends Pane {
 				resetGame();
 			}
 		}
-		if (GameLogic.getInstance().detectOverallWinner(boardWinners, indexx, indexy, possibleWinner)) {
-			resetGame();
-		}
+		showPossibleBoards();
 	}
 
 	// private fields of the class
+
+	private void showPossibleBoards() {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (gameLogic.checkBoard(i, j)) {
+					renders[i][j].showActive(gameLogic.getCurrent_player());
+				} else if (boardWinners[i][j] == EMPTY) {
+					System.out.println(boardWinners[i][j]);
+					renders[i][j].showInActive();
+				}
+			}
+		}
+
+	}
 
 	private int[][] boardWinners; // array that stores the winner of the game
 	private XOBoard[][] renders; // array that holds all the render pieces
@@ -81,12 +96,11 @@ class XOUltimateBoard extends Pane {
 	// constants for the class
 	private final int EMPTY = 0;
 
-
 	public int[][] getBoardWinners() {
 		return boardWinners;
 	}
 
-	public void updateBoardWinners(int x, int y) {
-		this.boardWinners[x][y] = gameLogic.getCurrent_player();
+	public void updateBoardWinners() {
+		this.boardWinners = gameLogic.getWinners();
 	}
 }
