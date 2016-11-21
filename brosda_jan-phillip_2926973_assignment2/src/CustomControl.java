@@ -10,17 +10,17 @@ class CustomControl extends Control {
 	public CustomControl() {
 		// set a default skin and generate a game board
 		setSkin(new CustomControlSkin(this));
-		xoboard = new XOUltimateBoard();
-		getChildren().add(xoboard);
+		ultimateXoboard = new XOUltimateBoard();
+		getChildren().add(ultimateXoboard);
 
 		// add a mouse clicked listener that will try to place a piece
 		setOnMouseClicked((MouseEvent event) -> {
-			xoboard.placePiece(event.getX(), event.getY());
+			ultimateXoboard.placePiece(event.getX(), event.getY());
 		});
 
 		setOnKeyPressed((KeyEvent event) -> {
 			if (event.getCode() == KeyCode.SPACE) {
-				xoboard.resetGame();
+				ultimateXoboard.resetGame();
 			}
 		});
 
@@ -31,9 +31,9 @@ class CustomControl extends Control {
 	public void resize(double width, double height) {
 		// update size of rect
 		super.resize(width, height);
-		xoboard.resize(width, height);
+		ultimateXoboard.resize(width, height);
 	}
 
 	// private fields of the class
-	private XOUltimateBoard xoboard;
+	private XOUltimateBoard ultimateXoboard;
 }

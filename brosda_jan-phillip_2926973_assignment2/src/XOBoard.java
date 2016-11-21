@@ -13,7 +13,6 @@ import javafx.scene.transform.Translate;
 class XOBoard extends Pane {
 	// constructor for the class
 	public XOBoard(XOUltimateBoard ref) {
-		this.ref = ref;
 		// initialise the boards
 		board = new int[3][3];
 		renders = new XOPiece[3][3];
@@ -22,24 +21,24 @@ class XOBoard extends Pane {
 				board[i][j] = EMPTY;
 				renders[i][j] = null;
 			}
-		ref.setCurrent_player(XPIECE);
+		gameLogic.setCurrent_player(XPIECE);
 
 		// initialise the rectangle and lines
 		back = new Rectangle();
 		back.setFill(Color.BLACK);
 		// stroke a border around the XOBoard
-		back.setStroke(Color.YELLOW);
+		back.setStroke(Color.WHITE);
 
 		h1 = new Line();
 		h2 = new Line();
 		v1 = new Line();
 		v2 = new Line();
-		h1.setStroke(Color.WHITE);
-		h2.setStroke(Color.WHITE);
-		v1.setStroke(Color.WHITE);
-		v2.setStroke(Color.WHITE);
+		h1.setStroke(Color.PURPLE);
+		h2.setStroke(Color.PURPLE);
+		v1.setStroke(Color.PURPLE);
+		v2.setStroke(Color.PURPLE);
 
-		// the horizontal lines only need the endx value modified the rest of
+		// the horizontal lines only need the end x value modified the rest of
 		// the values can be zero
 		h1.setStartX(0);
 		h1.setStartY(0);
@@ -47,7 +46,7 @@ class XOBoard extends Pane {
 		h2.setStartX(0);
 		h2.setStartY(0);
 		h2.setEndY(0);
-		// the vertical lines only need the endy value modified the rest of the
+		// the vertical lines only need the end y value modified the rest of the
 		// values can be zero
 		v1.setStartX(0);
 		v1.setStartY(0);
@@ -94,7 +93,8 @@ class XOBoard extends Pane {
 		v1.setEndY(height);
 		v2.setEndY(height);
 
-		// we need to reset the sizes and positions of all XOPieces that were placed
+		// we need to reset the sizes and positions of all XOPieces that were
+		// placed
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (board[i][j] != 0) {
@@ -117,39 +117,49 @@ class XOBoard extends Pane {
 	}
 
 	// public method that tries to place a piece
-	public void placePiece(final double x, final double y, final int tileX, final int tileY) { //, final double localTileWidth, final double localTileHeight) {
-		// translate the x, y coordinates into cell indexes of the current XOBoard
-		int indexx = (int) ((x - (tileX * 3.0 * cell_width)) / cell_width);
-		int indexy = (int) ((y - (tileY * 3.0 * cell_height)) / cell_height);
+	public void placePiece(final double x, final double y, final int boardX, final int boardY) {
+		// translate the x, y coordinates into cell indexes of the current
+		// XOBoard
+		int indexx = (int) ((x - (boardX * 3.0 * cell_width)) / cell_width);
+		int indexy = (int) ((y - (boardY * 3.0 * cell_height)) / cell_height);
 		// if the position is empty then place a piece and swap the players
-		if (board[indexx][indexy] == EMPTY && ref.getCurrent_player() == XPIECE) {
+		if ((board[indexx][indexy] == EMPTY) && (gameLogic.getCurrent_player() == XPIECE)) {
 			board[indexx][indexy] = XPIECE;
 			renders[indexx][indexy] = new XOPiece(XPIECE);
 			renders[indexx][indexy].resize(cell_width, cell_height);
 			renders[indexx][indexy].relocate(indexx * cell_width, indexy * cell_height);
 			getChildren().add(renders[indexx][indexy]);
-			if (GameLogic.getInstance().detectWinner(board, indexx, indexy, ref.getCurrent_player()))
-				ref.updateBoardWinners(tileX,tileY);
-			ref.setCurrent_player(OPIECE);
-		} else if (board[indexx][indexy] == EMPTY && ref.getCurrent_player() == OPIECE) {
+
+			if (gameLogic.detectWinner(board, indexx, indexy, boardX, boardY))
+				back.setFill(Color.DARKRED); // display won field
+			gameLogic.setCurrent_player(OPIECE); // update current player
+			gameLogic.setActiveStates(indexx, indexy); // activate next board
+
+		} else if ((board[indexx][indexy] == EMPTY) && (gameLogic.getCurrent_player() == OPIECE)) {
 			board[indexx][indexy] = OPIECE;
 			renders[indexx][indexy] = new XOPiece(OPIECE);
 			renders[indexx][indexy].resize(cell_width, cell_height);
 			renders[indexx][indexy].relocate(indexx * cell_width, indexy * cell_height);
 			getChildren().add(renders[indexx][indexy]);
-			if (GameLogic.getInstance().detectWinner(board, indexx, indexy, ref.getCurrent_player()))
-				ref.updateBoardWinners(tileX,tileY);
-			ref.setCurrent_player(XPIECE);
-		}
 
+			if (gameLogic.detectWinner(board, indexx, indexy, boardX, boardY))
+				back.setFill(Color.DARKOLIVEGREEN); // display won field
+			gameLogic.setCurrent_player(XPIECE); // update current player
+			gameLogic.setActiveStates(indexx, indexy); // activate next board
+		}
 	}
 
 	// private fields of the class
-	private int[][] board; // array that holds all pieces
-	private XOPiece[][] renders; // array that holds all the render pieces
-	private Rectangle back; // background of the board
-	private Line h1, h2, v1, v2; // horizontal and vertical grid lines
-	private double cell_width, cell_height; // width and height of a cell
+	// array that holds all pieces
+	private int[][] board;
+	// array that holds all the render pieces
+	private XOPiece[][] renders;
+	// background of the board
+	private Rectangle back;
+	// horizontal and vertical grid lines
+	private Line h1, h2, v1, v2;
+	// width and height of a cell
+	private double cell_width, cell_height;
 	// translation of {one, two} cell {width, height}
 	private Translate ch_one, ch_two, cw_one, cw_two;
 	// constants for the class
@@ -157,7 +167,7 @@ class XOBoard extends Pane {
 	private final int XPIECE = 1;
 	private final int OPIECE = 2;
 
-	private XOUltimateBoard ref;
+	private GameLogic gameLogic = GameLogic.getInstance();
 
 	public int[][] getBoard() {
 		return board;

@@ -13,19 +13,9 @@ class XOUltimateBoard extends Pane {
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++) {
 				boardWinners[i][j] = EMPTY; // initialize the winners array
-				renders[i][j] = new XOBoard(XOUltimateBoard.this); // render the
-																	// XO Boards
+				renders[i][j] = new XOBoard(this); // render the XO Boards
 				getChildren().add(renders[i][j]);
 			}
-		current_player = XPIECE;
-	}
-
-	public int getCurrent_player() {
-		return current_player;
-	}
-
-	public void setCurrent_player(int current_player) {
-		this.current_player = current_player;
 	}
 
 	// we have to override resizing behaviour to make our view appear properly
@@ -37,7 +27,8 @@ class XOUltimateBoard extends Pane {
 		cell_width = width / 3.0;
 		cell_height = height / 3.0;
 
-		// we need to reset the sizes and positions of all XOPieces that were placed
+		// we need to reset the sizes and positions of all XOPieces that were
+		// placed
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				renders[i][j].relocate(i * cell_width, j * cell_height);
@@ -63,14 +54,22 @@ class XOUltimateBoard extends Pane {
 		// translate the x, y coordinates into cell indexes
 		int indexx = (int) (x / cell_width);
 		int indexy = (int) (y / cell_height);
-		//save current player, cause it will be switched in placePiece
-		int possibleWinner = getCurrent_player();
+		// save current player, cause it will be switched in placePiece
+		int possibleWinner = gameLogic.getCurrent_player();
 		// translate height and width values and pass to
 		// place piece in the correct XOBoard in the right place
-		if (boardWinners[indexx][indexy] == EMPTY)
-		renders[indexx][indexy].placePiece(x, y, indexx, indexy);
-		if (GameLogic.getInstance().detectOverallWinner(boardWinners, indexx, indexy, possibleWinner))
+		if (boardWinners[indexx][indexy] == EMPTY) {
+			// gameLogic.tryPlacePiece(renders[indexx][indexy],x,y,indexx,indexy);
+			if (gameLogic.checkBoard(indexx, indexy)) {
+				renders[indexx][indexy].placePiece(x, y, indexx, indexy);
+			}
+			if (gameLogic.detectOverallWinner(indexx, indexy, possibleWinner)) {
+				resetGame();
+			}
+		}
+		if (GameLogic.getInstance().detectOverallWinner(boardWinners, indexx, indexy, possibleWinner)) {
 			resetGame();
+		}
 	}
 
 	// private fields of the class
@@ -78,17 +77,16 @@ class XOUltimateBoard extends Pane {
 	private int[][] boardWinners; // array that stores the winner of the game
 	private XOBoard[][] renders; // array that holds all the render pieces
 	private double cell_width, cell_height; // width and height of a cell
-	private int current_player; // who is the current player
+	private GameLogic gameLogic = GameLogic.getInstance();
 	// constants for the class
 	private final int EMPTY = 0;
-	private final int XPIECE = 1;
-	private final int OPIECE = 2;
-	
+
+
 	public int[][] getBoardWinners() {
 		return boardWinners;
 	}
 
 	public void updateBoardWinners(int x, int y) {
-		this.boardWinners[x][y] = getCurrent_player();
+		this.boardWinners[x][y] = gameLogic.getCurrent_player();
 	}
 }
